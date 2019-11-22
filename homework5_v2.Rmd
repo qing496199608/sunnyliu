@@ -1,0 +1,52 @@
+---
+title: "Hw5"
+author: "Sunny"
+date: "11/11/2019"
+output: html_document
+---
+```{r}
+list.files()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(forcats)
+library(lubridate)
+library(ggplot2)
+library(scales)
+library(sf)
+library(tigris)
+library(knitr)
+# load data
+homicides <- read.csv('Data/homicide-data.csv')
+head(homicides)
+denver <- homicides %>% 
+  filter(city == "Denver") %>% 
+  mutate(disposition=recode(disposition, 
+                            "Closed without arrest" = "unsolved",
+                            "Open/No arrest" = 'unsolved',
+                            "Closed by arrest" = "solved"))
+```
+
+```{r, fig.width=10}
+denver_map <- blocks(state= "CO", county = "Denver County", 
+                     class = "sf")
+denver_homicides <- st_as_sf(denver, coords = c("lon", "lat")) %>% 
+  st_set_crs(4269) %>% 
+  mutate(victim_race = fct_lump(victim_race, n=3))
+ggplot()+
+  geom_sf(data=denver_map, color = "blue")+
+  geom_sf(data=denver_homicides, aes(color=victim_race))+
+  facet_wrap(~disposition, ncol=1)+
+  ggtitle("Murder locations in Denver")+
+  theme_bw()+
+theme(plot.title = element_text(hjust = 0.3))+
+  labs(y= "Latitude", x= "Longitude", color= "Victim Race")+
+  theme(panel.spacing = unit(.5, units = "in"))+
+  theme(axis.text.x = element_text(angle=90))
+  
+```
+
