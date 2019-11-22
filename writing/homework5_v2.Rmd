@@ -4,11 +4,19 @@ author: "Sunny"
 date: "11/11/2019"
 output: html_document
 ---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.path = '../figures/',
+                     cache = TRUE,
+                     warning = FALSE,
+                     message = FALSE)
+```
+
 ```{r}
 list.files()
 ```
 
-```{r setup, include=FALSE}
+```{r setup, include=TRUE}
 knitr::opts_chunk$set(echo = TRUE)
 library(readr)
 library(dplyr)
@@ -20,9 +28,11 @@ library(scales)
 library(sf)
 library(tigris)
 library(knitr)
+```
 
+```{r, message=FALSE}
 # load data
-homicides <- read.csv('Data/homicide-data.csv')
+homicides <- read.csv('../Data/homicide-data.csv')
 head(homicides)
 denver <- homicides %>% 
   filter(city == "Denver") %>% 
@@ -32,7 +42,7 @@ denver <- homicides %>%
                             "Closed by arrest" = "solved"))
 ```
 
-```{r, fig.width=10}
+```{r fig_denver_map, fig.width=10}
 denver_map <- blocks(state= "CO", county = "Denver County", 
                      class = "sf")
 denver_homicides <- st_as_sf(denver, coords = c("lon", "lat")) %>% 
