@@ -2,7 +2,10 @@
 title: "Hw5"
 author: "Sunny"
 date: "11/11/2019"
-output: html_document
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r global_options, include=FALSE}
@@ -44,7 +47,7 @@ denver <- homicides %>%
 knitr::opts_knit$set(progress = FALSE)
 ```
 
-```{r fig_denver_map, fig.width=10}
+```{r fig_denver_map, fig.width=10, message=FALSE}
 denver_map <- blocks(state= "CO", county = "Denver County", 
                      class = "sf")
 denver_homicides <- st_as_sf(denver, coords = c("lon", "lat")) %>% 
