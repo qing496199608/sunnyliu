@@ -20,6 +20,7 @@ library(scales)
 library(sf)
 library(tigris)
 library(knitr)
+
 # load data
 homicides <- read.csv('Data/homicide-data.csv')
 head(homicides)
