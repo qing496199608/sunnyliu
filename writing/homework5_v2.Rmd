@@ -13,11 +13,6 @@ knitr::opts_chunk$set(fig.path = '../figures/',
 ```
 
 ```{r}
-list.files()
-```
-
-```{r setup, include=TRUE}
-knitr::opts_chunk$set(echo = TRUE)
 library(readr)
 library(dplyr)
 library(tidyr)
@@ -30,16 +25,23 @@ library(tigris)
 library(knitr)
 ```
 
-```{r, message=FALSE}
+```{r}
 # load data
 homicides <- read.csv('../Data/homicide-data.csv')
 head(homicides)
+```
+
+```{r}
 denver <- homicides %>% 
   filter(city == "Denver") %>% 
   mutate(disposition=recode(disposition, 
                             "Closed without arrest" = "unsolved",
                             "Open/No arrest" = 'unsolved',
                             "Closed by arrest" = "solved"))
+```
+
+```{r package_options, include=FALSE}
+knitr::opts_knit$set(progress = FALSE)
 ```
 
 ```{r fig_denver_map, fig.width=10}
